@@ -1,0 +1,11 @@
+{
+    "name": "PassiveRadar",
+    "version": "1.0.0",
+    "title": "Passive Radar",
+    "author": "duskwuff",
+    "factorio_version": "2.0",
+    "dependencies": [
+        "base >= 2.0.0"
+    ],
+    "description": "Allows radar to be toggled to a 'passive' mode which uses less power, but does not scan sectors beyond its vision range."
+}
