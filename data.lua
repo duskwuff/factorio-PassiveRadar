@@ -1,7 +1,7 @@
 local passive_radar = table.deepcopy(data.raw.radar["radar"])
 passive_radar.name = "passive-radar"
 passive_radar.energy_usage = "100kW"
-passive_radar.heating_energy = "100kW"
+passive_radar.heating_energy = feature_flags.freezing and "100kW" or nil
 passive_radar.max_distance_of_sector_revealed = 0
 passive_radar.energy_per_sector = "1TJ" -- 115 days @ 100kW, lol
 passive_radar.energy_per_nearby_scan = "100kJ" -- 1/s
