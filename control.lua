@@ -7,13 +7,17 @@ function swap(e, p, new_name)
     -- save some properties
     local old_health = e.health
     local old_backer_name = e.backer_name
+    local entity_force = e.force
+    local entity_position = e.position
+    local entity_quality = e.quality
 
-    e = e.surface.create_entity{
+    -- destroy current and replace with new variant
+    e.destroy()
+    e = p.surface.create_entity{
         name = new_name,
-        position = e.position,
-        quality = e.quality,
-        force = e.force,
-        fast_replace = true,
+        position = entity_position,
+        quality = entity_quality,
+        force = entity_force,
         player = p,
     }
 
