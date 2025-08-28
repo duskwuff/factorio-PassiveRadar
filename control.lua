@@ -14,11 +14,11 @@ function swap(e, p, new_name)
         quality = e.quality,
         force = e.force,
         fast_replace = true,
-        player = p,
     }
 
     e.health = old_health
     e.backer_name = old_backer_name
+    e.last_user = player
 end
 
 function do_passive_radar_toggle(ev)

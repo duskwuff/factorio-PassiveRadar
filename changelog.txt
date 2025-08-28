@@ -1,4 +1,10 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.0.2
+Date: 2025-08-28
+  Bugfixes:
+    - Fixed an issue which granted the player extra radar items when toggling them. (This issue was spotted by jim-hart - thanks for pointing this out!)
+
+---------------------------------------------------------------------------------------------------
 Version: 1.0.1
 Date: 2025-08-13
   Bugfixes:
