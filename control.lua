@@ -5,20 +5,40 @@ function swap(e, p, new_name)
     }
 
     -- save some properties
-    local old_health = e.health
-    local old_backer_name = e.backer_name
-
-    e = e.surface.create_entity{
-        name = new_name,
+    local old = {
+        surface = e.surface,
+        health = e.health,
+        backer_name = e.backer_name,
         position = e.position,
         quality = e.quality,
         force = e.force,
-        fast_replace = true,
     }
 
-    e.health = old_health
-    e.backer_name = old_backer_name
-    e.last_user = player
+    local connections = {}
+    for id, conn in pairs(e.get_wire_connectors()) do
+        connections[id] = conn.connections
+    end
+
+    e.destroy()
+
+    e = old.surface.create_entity{
+        name = new_name,
+        player = p,
+        position = old.position,
+        quality = old.quality,
+        force = old.force,
+    }
+    e.health = old.health
+    e.backer_name = old.backer_name
+
+    for id, conns in pairs(connections) do
+        local src = e.get_wire_connector(id, true)
+        for _, c in pairs(conns) do
+            if c.origin ~= defines.wire_origin.radars then
+                src.connect_to(c.target, false, c.origin)
+            end
+        end
+    end
 end
 
 function do_passive_radar_toggle(ev)
