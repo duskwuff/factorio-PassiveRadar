@@ -1,4 +1,12 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.0.4
+Date: 2026-06-23
+  Changes:
+    - Support for Factorio 2.1.
+    - A more elegant fix for the duplication issue.
+    - Toggling radar entities to/from passive now works on ghosts.
+
+---------------------------------------------------------------------------------------------------
 Version: 1.0.3
 Date: 2025-09-09
   Bugfixes:

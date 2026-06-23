@@ -4,51 +4,60 @@ function swap(e, p, new_name)
         position = e.position,
     }
 
-    -- save some properties
     local old = {
-        surface = e.surface,
         health = e.health,
         backer_name = e.backer_name,
+    }
+
+    e = e.surface.create_entity{
+        name = new_name,
         position = e.position,
         quality = e.quality,
         force = e.force,
+        fast_replace = true,
+        spill = false,
     }
 
-    local connections = {}
-    for id, conn in pairs(e.get_wire_connectors()) do
-        connections[id] = conn.connections
-    end
-
-    e.destroy()
-
-    e = old.surface.create_entity{
-        name = new_name,
-        player = p,
-        position = old.position,
-        quality = old.quality,
-        force = old.force,
-    }
+    e.last_user = p
     e.health = old.health
     e.backer_name = old.backer_name
+end
 
-    for id, conns in pairs(connections) do
-        local src = e.get_wire_connector(id, true)
-        for _, c in pairs(conns) do
-            if c.origin ~= defines.wire_origin.radars then
-                src.connect_to(c.target, false, c.origin)
-            end
-        end
-    end
+function swap_ghost(e, p, new_name)
+    p.play_sound{
+        path = "utility/wire_disconnect", -- click!
+        position = e.position,
+    }
+
+    e = e.surface.create_entity{
+        name = "entity-ghost",
+        inner_name = new_name,
+        position = e.position,
+        quality = e.quality,
+        force = e.force,
+        fast_replace = true,
+        spill = false,
+    }
+
+    e.last_user = p
 end
 
 function do_passive_radar_toggle(ev)
     local p = game.players[ev.player_index]
     local e = p.selected
-    if e and e.valid and e.force == p.force and e.type == "radar" then
-        if e.name == "radar" then
-            swap(e, p, "passive-radar")
-        elseif e.name == "passive-radar" then
-            swap(e, p, "radar")
+    if e and e.valid and e.force == p.force then
+        if e.type == "radar" then
+            if e.name == "radar" then
+                swap(e, p, "passive-radar")
+            elseif e.name == "passive-radar" then
+                swap(e, p, "radar")
+            end
+        elseif e.type == "entity-ghost" and e.ghost_type == "radar" then
+            if e.ghost_name == "radar" then
+                swap_ghost(e, p, "passive-radar")
+            elseif e.ghost_name == "passive-radar" then
+                swap_ghost(e, p, "radar")
+            end
         end
     end
 end
